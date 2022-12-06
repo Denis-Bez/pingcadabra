@@ -1,0 +1,12 @@
+.vscode
+.bot_env
+.git
+.Telegram_bots
+.PP010
+.pingcadabra
+__pycache__
+config.py
+config
+Dockerfile
+.dockerignore
+docker-compose.yml
