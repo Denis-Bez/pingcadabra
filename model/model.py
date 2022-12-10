@@ -9,8 +9,8 @@ parent_dir = path.dirname(path.abspath(__file__))
 db_path = path.join(parent_dir, 'bot_database.db')
 
 # engine = create_engine( r'sqlite:///{}'.format(db_path), future=True)
-# engine = create_engine("postgresql://user:example@85.193.93.171:54321/ping_db")
-engine = create_engine("postgresql://user:example@db:5432/ping_db")
+engine = create_engine("postgresql://user:example@85.193.93.171:54321/ping_db")
+#engine = create_engine("postgresql://user:example@db:5432/ping_db")
 Base = declarative_base()
 
 class Users(Base):

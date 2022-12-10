@@ -191,7 +191,6 @@ async def set_autocheck(update: Update, context: ContextTypes.DEFAULT_TYPE) -> s
     # Autostart every 1, 4, 12 hours
     for i in range(0, 24, timer):
         context.job_queue.run_daily(check_queue, time(i, 0, 0, 0), user_id=user_id, name=str(user_id))
-    
     context.user_data['autocheck_status'] = lang_callback['timer'][user_lang][0] + str(timer) + lang_callback['timer'][user_lang][1]
     # Add timer information to database
     model.Favorites.add_timer(user_id, timer)
