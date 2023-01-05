@@ -1,6 +1,8 @@
-from pythonping import ping
 import asyncio
 import time
+
+from pythonping import ping
+import aioping 
 
 # Using decorator
 def test_time(func):
@@ -19,53 +21,42 @@ def test_time(func):
 # Checking ping server. Example ip: "85.193.93.171", "worldcadabra.com"
 def check_ping(ip):
     try:
-        ping_time = ping(str(ip)).rtt_avg_ms
+        ping_time = ping(str(ip), timeout=2).rtt_avg_ms
     # Exception if 
     except Exception as e:
         print(e)
         return(["Input adress error", False])
-
+    
     if int(ping_time) < 2000:
-        print(ping_time)
         return(["Server online", ping_time])
     else:
-        print(ping_time)
         return(["Server offline", ping_time])
 
 
 async def async_check_ping(ip):
+    ping_time = ping(str(ip)).rtt_avg_ms
+    print(ping_time)
+
+
+async def ping_aio_check(host):
     try:
-        ping_time = ping(str(ip)).rtt_avg_ms
-    except Exception as e:
-        print(e)
-        return(["Input adress error", False])
+        delay = await aioping.ping(host, timeout=2) * 1000
+        print("Ping response in %.0f ms" % delay)
 
-    if int(ping_time) < 2000:
-        print(ping_time)
-        return(["Server online", ping_time])
-    else:
-        print(ping_time)
-        return(["Server offline", ping_time])
+    except TimeoutError:
+        print("Time out")
 
-
-async def async_run(ip):
-    await async_check_ping('46.147.41.173')
-    await async_check_ping('85.193.93.171')
-    await async_check_ping('85.193.93.171')
-    await async_check_ping('85.193.93.171')
-    await async_check_ping('85.193.93.171')
-    await async_check_ping('85.193.93.171')
-    await async_check_ping('85.193.93.171')
-    await async_check_ping('85.193.93.171')
-    #await async_check_ping(ip)
 
 if __name__ == '__main__':
+    hosts = ['46.147.41.173', '85.193.93.171', '85.193.93.171', '85.193.93.171', '85.193.93.171', '46.147.41.173', '46.147.41.173', '46.147.41.173', '46.147.41.173']
+    # run()
+    start_time = time.time()
+    for host in hosts:
+        # check_ping(host)
+        asyncio.run(ping_aio_check(host))
+    end_time = time.time()
+    print(end_time - start_time)
+
     
-    @test_time
-    async def start():    
-        #for i in ['85.193.93.171', '85.193.93.171', '85.193.93.171', '85.193.93.171', '85.193.93.171', '85.193.93.171', '85.193.93.171', '46.147.41.173']:
-            #check_ping(i)
-        asyncio.run(async_run(None))
     
-    start()
     
