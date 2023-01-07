@@ -1,38 +1,11 @@
 import asyncio
 import time
 
-from pythonping import ping
 import aioping 
-
-# Using decorator
-def test_time(func):
-    def wrapper(*args, **kwargs):
-        start_time = time.time()
-        result = func(*args, **kwargs)
-        end_time = time.time()
-        operating_time = end_time - start_time
-        print(f"Operating time: {'%.3f' % operating_time}")
-        return result
-    
-    return wrapper
 
 
 # TO DO: How doing this asynchronous
-# Checking ping server. Example ip: "85.193.93.171", "worldcadabra.com"
-def check_ping(ip):
-    try:
-        ping_time = ping(str(ip), timeout=2).rtt_avg_ms
-    # Exception if 
-    except Exception as e:
-        print(e)
-        return(["Input adress error", False])
-    
-    if int(ping_time) < 2000:
-        return(["Server online", ping_time])
-    else:
-        return(["Server offline", ping_time])
-
-
+# Checking async ping server. Example ip: "85.193.93.171", "worldcadabra.com"
 async def ping_aio_check(host):
     try:
         delay = await aioping.ping(host, timeout=5) * 1000
