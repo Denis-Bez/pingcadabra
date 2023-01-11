@@ -35,7 +35,8 @@ manual_checking = ConversationHandler(
                     ),
                 CallbackQueryHandler(
                     callback.help, pattern="^help$"
-                    )
+                    ),
+                CommandHandler('t', callback.test_async) # TODO: Deleted
             ],
 
             'TYPING_MANUAL_CHECKING': 
