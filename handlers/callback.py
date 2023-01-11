@@ -1,4 +1,5 @@
 from datetime import time
+import asyncio
 
 from telegram import Update
 from telegram.ext import ContextTypes
@@ -74,7 +75,7 @@ async def host_checking(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
     adress = update.message.text
     # How deleted this message after ping checking
     to_delete = await update.message.reply_text(lang_callback['processing_message'][user_lang])
-    response = ping_check_view(adress, user_lang)
+    response = await ping_check_view(adress, user_lang)
     await to_delete.delete()
     await update.message.reply_text(text=response, reply_markup=keyboards.navigation_keyboard(back=False))
 
@@ -140,7 +141,7 @@ async def check_favorite(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     await query.answer()
     adress = query.data.split('_')[1]
     await query.edit_message_text(text=lang_callback['processing_message'][user_lang])
-    response = ping_check_view(adress, user_lang)
+    response = await ping_check_view(adress, user_lang)
     await query.edit_message_text(text=response, reply_markup=keyboards.navigation_keyboard())
 
     return 'CHOOSE_FAVORITE'
@@ -165,7 +166,7 @@ async def check_queue(context: ContextTypes.DEFAULT_TYPE) -> None:
     user_lang = context.user_data['language']
     adresses = model.Users.pull_favorite(user_id)
     for adress in adresses:
-        response = ping_check_view(adress, user_lang)
+        response = await ping_check_view(adress, user_lang)
         try:
             response = await context.bot.send_message(chat_id=user_id, text=response)
         except Exception as e:
@@ -222,8 +223,15 @@ def deleted_jobs(current_jobs, user_id) -> None:
     model.Favorites.delete_timer(int(user_id))
 
 
-def ping_check_view(ip, lang) -> str:
-    response = ping_check.check_ping(ip)
+# TODO: Deleted
+async def test_async(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    # query = update.callback_query
+    await asyncio.sleep(10)
+    await update.message.reply_text('Working!')
+
+
+async def ping_check_view(ip, lang) -> str:
+    response = await ping_check.check_ping(ip)
     return ping_response(response, lang, ip)
 
 
