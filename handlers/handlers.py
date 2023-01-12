@@ -18,76 +18,76 @@ application.add_handler(TypeHandler(Update, callback.typehandler), -1)
 
 # --- Conversation Handlers ---
 manual_checking = ConversationHandler(
-        entry_points=[CommandHandler("start", callback.start)],
+        entry_points=[CommandHandler("start", callback.start, block=False)],
         states={
 
             'MAIN_CHOOSING': 
             [
-                CommandHandler('start', callback.start),
+                CommandHandler('start', callback.start, block=False),
                 CallbackQueryHandler(
-                    callback.manual_checking, pattern="^manual_checking$"
+                    callback.manual_checking, pattern="^manual_checking$", block=False
                     ),
                 CallbackQueryHandler(
-                    callback.favorites, pattern="^favorites$"
+                    callback.favorites, pattern="^favorites$", block=False
                     ),
                 CallbackQueryHandler(
-                    callback.autochecking, pattern="^autocheck$"
+                    callback.autochecking, pattern="^autocheck$", block=False
                     ),
                 CallbackQueryHandler(
-                    callback.help, pattern="^help$"
+                    callback.help, pattern="^help$", block=False
                     ),
-                CommandHandler('t', callback.test_async) # TODO: Deleted
+                CommandHandler('t', callback.test_async, block=False) # TODO: Deleted
             ],
 
             'TYPING_MANUAL_CHECKING': 
             [
                 MessageHandler(
                     filters.TEXT & ~filters.COMMAND,
-                    callback.host_checking
+                    callback.host_checking, block=False
                 )
             ],
 
             'CHOOSE_FAVORITE':
             [
                 CallbackQueryHandler(
-                    callback.check_favorite, pattern="^favorite_."
+                    callback.check_favorite, pattern="^favorite_.", block=False
                     ),
                 CallbackQueryHandler(
-                    callback.delete_favorite, pattern="^delete_."
+                    callback.delete_favorite, pattern="^delete_.", block=False
                     ),
                 CallbackQueryHandler(
-                    callback.type_favorite, pattern="^type_favorite$"
+                    callback.type_favorite, pattern="^type_favorite$", block=False
                     ),
                 CallbackQueryHandler(
-                    callback.favorites, pattern="^back$"
+                    callback.favorites, pattern="^back$", block=False
                     )
             ],
 
             'ADD_FAVORITE': 
             [
                 MessageHandler(
-                    filters.TEXT & ~filters.COMMAND, callback.add_favorite
+                    filters.TEXT & ~filters.COMMAND, callback.add_favorite, block=False
                 )
             ],
             'CHOOSE_TIMER':
             [
                 CallbackQueryHandler(
-                    callback.set_autocheck, pattern="^setautocheck_."
+                    callback.set_autocheck, pattern="^setautocheck_.", block=False
                     ),
                 CallbackQueryHandler(
-                    callback.remove_job, pattern="^remove_job$"
+                    callback.remove_job, pattern="^remove_job$", block=False
                     )
             ],
             'BACK_TIMER_MENU':
             [
                 CallbackQueryHandler(
-                    callback.autochecking, pattern="^back$"
+                    callback.autochecking, pattern="^back$", block=False
                     ),
             ]
 
         },
-        fallbacks=[CommandHandler('start', callback.start), CallbackQueryHandler(callback.start, pattern="^menu$"), 
-        CommandHandler('help', callback.help)],
+        fallbacks=[CommandHandler('start', callback.start, block=False), CallbackQueryHandler(callback.start, pattern="^menu$", block=False), 
+        CommandHandler('help', callback.help, block=False)],
     )
 
 application.add_handler(manual_checking)
