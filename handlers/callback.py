@@ -223,13 +223,6 @@ def deleted_jobs(current_jobs, user_id) -> None:
     model.Favorites.delete_timer(int(user_id))
 
 
-# TODO: Deleted
-async def test_async(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    # query = update.callback_query
-    await asyncio.sleep(10)
-    await update.message.reply_text('Working!')
-
-
 async def ping_check_view(ip, lang) -> str:
     response = await ping_check.check_ping(ip)
     return ping_response(response, lang, ip)
