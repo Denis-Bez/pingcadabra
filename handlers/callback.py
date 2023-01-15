@@ -188,7 +188,13 @@ async def set_autocheck(update: Update, context: ContextTypes.DEFAULT_TYPE) -> s
     await query.answer()
     user_id = update.effective_user.id
     timer = int(query.data.split('_')[1])
-    # TODO: Checking if user don't have favorite adresses
+    
+    # Checking if user don't have favorite adresses
+    adresses = model.Users.pull_favorite(user_id)
+    if not adresses:
+        await query.edit_message_text(text=lang_callback['if_no_favorite'][user_lang], reply_markup=keyboards.navigation_keyboard(back=False))
+        return 'MAIN_CHOOSING'
+
     # Autostart every 1, 4, 12 hours
     for i in range(0, 24, timer):
         context.job_queue.run_daily(check_queue, time(i, 0, 0, 0), user_id=user_id, name=str(user_id))

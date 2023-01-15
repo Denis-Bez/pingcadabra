@@ -47,6 +47,10 @@ lang_callback = {
         "ru":["Таймер включен (", "ч.)", "Таймер установлен (", "Таймер остановлен!"],
         "en":["The timer turn on (", "h.)", "Timer was set (", "Timer was turn off"]
     },
+    "if_no_favorite": {
+        "ru":"Необходимо добавить хост в Избранное",
+        "en":"Need add host to Favorite"
+    },
     "help": {
         "ru":
         "Описание:\n\n\
